@@ -3,8 +3,12 @@ kind: MachineSet
 metadata:
   name: {{ printf "%v-%v-%v" .Values.machineset.infrastructure_id .Values.machineset.role .Values.machineset.zone }}
   namespace: openshift-machine-api
+  annotations:
+    meta.helm.sh/release-name: development
+    meta.helm.sh/release-namespace: openshift-machine-api
   labels:
     machine.openshift.io/cluster-api-cluster: {{ .Values.machineset.infrastructure_id }}
+    app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 0
   selector:

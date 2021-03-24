@@ -2,6 +2,10 @@ apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
   name: proactive-node-autoscaling-pods
+  annotations:
+    meta.helm.sh/release-name: development
+  labels:
+    app.kubernetes.io/managed-by: Helm
 value: 0
 globalDefault: false
 description: "This priority class is the Priority class for Proactive Node Scaling."

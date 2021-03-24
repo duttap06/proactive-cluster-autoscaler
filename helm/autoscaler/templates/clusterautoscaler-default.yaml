@@ -2,6 +2,10 @@ apiVersion: autoscaling.openshift.io/v1
 kind: ClusterAutoscaler
 metadata:
   name: default
+  annotations:
+    meta.helm.sh/release-name: development
+  labels:
+    app.kubernetes.io/managed-by: Helm
 spec:
   podPriorityThreshold: -10 
   resourceLimits:
