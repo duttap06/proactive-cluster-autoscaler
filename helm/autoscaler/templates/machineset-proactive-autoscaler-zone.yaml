@@ -1,4 +1,4 @@
-﻿apiVersion: machine.openshift.io/v1beta1
+apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   name: {{ printf "%v-%v-%v" .Values.machineset.infrastructure_id .Values.machineset.role .Values.machineset.zone }}
@@ -25,7 +25,7 @@ spec:
     spec:
       metadata:
         labels:
-          {{ printf "node-role.kubernetes.io/%v: ''" .Values.machineset.role }}
+          {{ printf "node-role.kubernetes.io/%v: 'yes'" .Values.machineset.role }}
       providerSpec:
         value:
           userDataSecret:

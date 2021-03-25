@@ -1,0 +1,18 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: 'true'
+  name: {{ include "autoscaler.fullname" . }}
+  namespace: {{ .Values.default.namespace }}
+  labels:
+    {{- include "autoscaler.labels" . | nindent 4 }}
+spec:
+  to: 
+    kind: Service
+    name: {{ include "autoscaler.fullname" . }}
+    weight: 100
+  port:
+    targetPort: {{ .Values.service.targetPort }}
+  wildcardPolicy: None
+

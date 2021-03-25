@@ -1,11 +1,23 @@
 machineset:
-  infrastructure_id: cluster-0e58-scm6d
+  infrastructure_id: cluster-2c86-x96wt
   role: proactive-autoscaler
-  zone: us-west-2a
-  region: us-west-2
-  ami_id: ami-010de485a2ee23e5e
+  zone: us-east-2a
+  region: us-east-2
+  ami_id: ami-0c84b5c5255ec4777
 default:
-  namespace: proactive-node-scaler-operator
+  namespace: proactive-node-autoscaling-operator
 priority_class_name:
   low: proactive-node-autoscaling-pods
   high: normal-workload
+service:
+  port: 8080
+  targetPort: 8080
+  portName: 8080-tcp
+image:
+  repository: image-registry.openshift-image-registry.svc:5000/proactive-node-scaling-operator/nodejs-app@sha256
+  tag: 570673fbe9e3883b58bba574dc7adcb3691df74abdc7c3b73de7ed7ae5197085
+serviceAccount:
+  create: true
+autoscaling:
+  enabled: false
+replicaCount: 10

@@ -13,3 +13,60 @@ spec:
       command: ['wget']
       args: ['{{ include "test-app.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "{{ include "test-app.fullname" . }}-test-connection"
+  namespace: "{{ Values.default.namespace }}"
+  labels:
+    {{- include "test-app.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  replicas: 20
+  selector:
+    matchLabels:
+      app: "{{ include "test-app.fullname" . }}-test-connection"
+  template:
+    metadata: 
+      creationTimestamp: null
+      labels:
+        app: "{{ include "test-app.fullname" . }}-test-connection"
+        deploymentconfig: "{{ include "test-app.fullname" . }}-test-connection"
+    spec:
+      containers:
+        - name: "{{ include "test-app.fullname" . }}-test-connection"
+          image: >-
+            {{ .Values.app.image }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        {{ printf "node-role.kubernetes.io/%v: ''" .Values.machineset.role }}
+      securityContext: {}
+      schedulerName: default-scheduler
+      priorityClassName: {{ .Values.priority_class_name.high }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pull_secret_1 }}
+        - name: {{ .Values.image.pull_secret_2 }}
+        - name: {{ .Values.image.pull_secret_3 }}
+
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
