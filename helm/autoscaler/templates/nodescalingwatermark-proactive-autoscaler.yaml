@@ -11,4 +11,4 @@ spec:
   priorityClassName: {{ .Values.priority_class_name.low }}
   watermarkPercentage: 20
   nodeSelector:
-    {{ printf "node-role.kubernetes.io/%v: 'yes'" .Values.machineset.role }}
+    machine-set-group: proactive-autoscaler-operator

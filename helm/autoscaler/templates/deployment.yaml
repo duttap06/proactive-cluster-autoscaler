@@ -49,7 +49,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       priorityClassName: {{ .Values.priority_class_name.high }}
       nodeSelector:
-        {{ printf "node-role.kubernetes.io/%v: 'yes'" .Values.machineset.role }}
+        machine-set-group: proactive-autoscaler-operator
       {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

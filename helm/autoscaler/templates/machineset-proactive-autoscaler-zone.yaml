@@ -9,12 +9,14 @@ metadata:
   labels:
     machine.openshift.io/cluster-api-cluster: {{ .Values.machineset.infrastructure_id }}
     app.kubernetes.io/managed-by: Helm
+    machine-set-group: proactive-autoscaler-operator
 spec:
   replicas: 0
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: {{ .Values.machineset.infrastructure_id }}
       machine.openshift.io/cluster-api-machineset: {{ printf "%v-%v-%v" .Values.machineset.infrastructure_id .Values.machineset.role .Values.machineset.zone }}
+      machine-set-group: proactive-autoscaler-operator
   template:
     metadata:
       labels:
@@ -22,10 +24,12 @@ spec:
         machine.openshift.io/cluster-api-machine-role: {{ .Values.machineset.role }}
         machine.openshift.io/cluster-api-machine-type: {{ .Values.machineset.role }}
         machine.openshift.io/cluster-api-machineset: {{ printf "%v-%v-%v" .Values.machineset.infrastructure_id .Values.machineset.role .Values.machineset.zone }}
+        machine-set-group: proactive-autoscaler-operator
     spec:
       metadata:
         labels:
           {{ printf "node-role.kubernetes.io/%v: 'yes'" .Values.machineset.role }}
+          machine-set-group: proactive-autoscaler-operator
       providerSpec:
         value:
           userDataSecret:
